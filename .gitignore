@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Build outputs
+dist/
+build/
+*.exe
+*.zip
+
+# Local credentials & state
+credentials.json
+data/
+*.log
+.env
+.farm-token
+*.local
+
+# Certificates & keys
+*.pfx
+*.pem
+*.key
+*.cer
+
+# IDE / OS
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

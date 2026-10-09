@@ -1,0 +1,35 @@
+{
+  "name": "farm-edge",
+  "version": "1.0.0",
+  "description": "Open-source outbound LAN bridge agent for 3D printer farms (Bambu Lab, Flashforge, Creality, Elegoo, Klipper)",
+  "homepage": "https://farm.5dsap.ru",
+  "license": "MIT",
+  "author": "3D ZIPPER / 3dvortex.ru",
+  "main": "index.js",
+  "bin": {
+    "farm-edge": "./index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/UniqfabricX/farm-edge.git"
+  },
+  "bugs": {
+    "url": "https://github.com/UniqfabricX/farm-edge/issues"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node index.js run",
+    "pair": "node index.js pair",
+    "run": "node index.js run",
+    "status": "node index.js status",
+    "test": "node --test tests/*.test.js",
+    "test:unit": "node --test tests/edge-agent.test.js",
+    "test:cloud": "node --test tests/cloud-smoke.test.js"
+  },
+  "dependencies": {
+    "basic-ftp": "^5.2.2",
+    "ws": "^8.18.0"
+  }
+}

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Farm Edge — инструкция</title>
+  <style>
+    :root { --bg:#0f1419; --card:#1a222c; --txt:#e7ecf1; --muted:#8b9aab; --acc:#3b82f6; --ok:#22c55e; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: "Segoe UI", system-ui, sans-serif; background:var(--bg); color:var(--txt); line-height:1.5; }
+    .wrap { max-width: 720px; margin: 0 auto; padding: 32px 20px 64px; }
+    h1 { font-size: 1.6rem; margin: 0 0 8px; }
+    .lead { color: var(--muted); margin: 0 0 28px; }
+    .step { background: var(--card); border-radius: 12px; padding: 18px 20px; margin: 0 0 14px; }
+    .step h2 { margin: 0 0 8px; font-size: 1.05rem; }
+    .n { display:inline-flex; width:28px; height:28px; border-radius:50%; background:var(--acc); color:#fff; align-items:center; justify-content:center; font-weight:700; margin-right:8px; font-size:14px; }
+    code, kbd { background:#0b0f14; padding:2px 6px; border-radius:6px; font-size:0.92em; }
+    a { color: #93c5fd; }
+    .ok { color: var(--ok); font-weight: 600; }
+    .note { font-size: 0.92rem; color: var(--muted); }
+    ul { margin: 8px 0 0; padding-left: 1.2rem; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Подключение принтеров к FARM</h1>
+    <p class="lead">Установщик сам поставит агент, привяжет ПК к облаку и включит автозапуск. Node.js качается автоматически, если его ещё нет.</p>
+
+    <div class="step">
+      <h2><span class="n">1</span> Установщик и код на сайте</h2>
+      <p>Откройте <a href="https://farm.5dsap.ru/" target="_blank" rel="noopener">farm.5dsap.ru</a> и войдите как владелец. В верхней карточке <b>Farm Edge</b> на вкладке «Принтеры» нажмите <b>«Скачать для Windows»</b>, затем <b>«Получить код привязки»</b>.</p>
+      <p class="note">Код действует ~15 минут. Скопируйте его (например <code>ABCD-EFGH</code>).</p>
+    </div>
+
+    <div class="step">
+      <h2><span class="n">2</span> Установка на Farm PC</h2>
+      <ul>
+        <li>Скачайте и запустите <code>FarmEdge-Setup.exe</code> (обычный мастер Windows)</li>
+        <li>Next → Установить; в конце отметьте «Подключить к облаку»</li>
+        <li>Вставьте код → при необходимости укажите адрес farm-bff (по умолчанию <code>http://127.0.0.1:3001</code>)</li>
+        <li>Нажмите <b>«Подключить»</b></li>
+      </ul>
+      <p class="note">Устанавливайте агент на ПК с Farm BFF. Этот ПК должен быть в той же сети, что и принтеры. Проброс портов роутера не нужен.</p>
+      <p class="note">Запасной вариант: архив <code>FarmEdge-Setup-win.zip</code> → <code>Install-FarmEdge.bat</code>.</p>
+    </div>
+
+    <div class="step">
+      <h2>Windows пишет «Система защитила ваш компьютер» / браузер — «файл может быть опасен»</h2>
+      <p>Это стандартное предупреждение SmartScreen для программ без цифровой подписи издателя, а не сигнал вируса. Установщик скачивайте <b>только</b> с <code>farm.5dsap.ru</code> и перед запуском сверьте контрольную сумму.</p>
+      <ul>
+        <li><b>Браузер</b> (Edge/Chrome): в панели загрузок нажмите <b>«…» → «Сохранить»</b> / <b>«Всё равно скачать»</b>.</li>
+        <li><b>Окно SmartScreen</b>: нажмите <b>«Подробнее»</b>, затем <b>«Выполнить в любом случае»</b>.</li>
+        <li><b>Проверка</b>: PowerShell → <code>Get-FileHash .\FarmEdge-Setup.exe -Algorithm SHA256</code> и сравните с <a href="/downloads/FarmEdge-SHA256.txt" target="_blank" rel="noopener">FarmEdge-SHA256.txt</a>. Не совпало — не запускайте.</li>
+      </ul>
+      <p class="note">Если корпоративная политика блокирует неподписанные .exe — используйте ZIP-вариант: <code>FarmEdge-Setup-win.zip</code> → <code>Install-FarmEdge.bat</code> (то же самое без установщика).</p>
+    </div>
+
+    <div class="step">
+      <h2><span class="n">3</span> Проверка</h2>
+      <p>Вернитесь в верхнюю карточку Farm Edge — статус должен стать <span class="ok">«Агент онлайн»</span>.</p>
+      <p>После этого вкладки сканера / принтеров / склада работают через ваш дом, а не через сервер в датацентре.</p>
+    </div>
+
+    <div class="step">
+      <h2>Важно</h2>
+      <ul>
+        <li>Секреты принтеров и файлы остаются на домашнем ПК.</li>
+        <li>Если агент «привязан», но выключен — в облаке будет сообщение, что агент не в сети (это нормально).</li>
+        <li><b>Статус «привязан · офлайн», хотя ПК включён</b> — агент отозван в облаке или сменился аккаунт. Получите новый код на сайте и запустите <b>«Подключить Farm Edge»</b> (меню Пуск → Farm Edge): с новым кодом агент перепривязывается заново, старые данные сохраняются в резервную копию.</li>
+        <li>Удаление: Параметры Windows → Приложения → <b>Farm Edge</b> → Удалить (+ в облаке «Отозвать»).</li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>
